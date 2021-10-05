@@ -1,5 +1,5 @@
-from login_app.config.MySQLConnection import connectToMySQL
-from login_app import app 
+from recipes_app.config.MySQLConnection import connectToMySQL
+from recipes_app import app 
 from datetime import date, datetime
 from flask import flash
 import re
@@ -18,7 +18,7 @@ class User:
 
     @classmethod
     def register_login(cls, data):
-        query = "INSERT INTO users (first_name, last_name, email, users_password, created_at, updated_at) VALUES ( %(first_name)s , %(last_name)s , %(email)s, %(encryptedpassword)s, SYSDATE(), SYSDATE());"
+        query = "INSERT INTO users (first_name, last_name, email, users_password, created_at) VALUES ( %(first_name)s , %(last_name)s , %(email)s, %(encryptedpassword)s, SYSDATE());"
         data2 = {
             "first_name" : data[0],
             "last_name" : data[1],
@@ -27,7 +27,7 @@ class User:
             "encryptedpassword" : data[4],
             "confirm_users_password" : data[5]
         }
-        result = connectToMySQL('login_and_registration').query_db( query, data2 )
+        result = connectToMySQL('recipes_schema').query_db( query, data2 )
         return result
     
     @classmethod
@@ -37,21 +37,19 @@ class User:
             "email" : data[0],
             "users_password" : data[1],
         }
-        result = connectToMySQL('login_and_registration').query_db( query, data2 )
+        result = connectToMySQL('recipes_schema').query_db( query, data2 )
         return result
 
     @classmethod
     def get_userBy_id( cls, data ):
         query = "SELECT * FROM users WHERE users_id = %(users_id)s;"
-
-        results = connectToMySQL('login_and_registration').query_db( query, data )
+        results = connectToMySQL('recipes_schema').query_db( query, data )
         return results
 
-
-    @classmethod
+    @classmethod 
     def get_all_users( cls, data ):
         query = "SELECT * FROM users WHERE users_id != %(users_id)s ORDER BY first_name;"
-        results = connectToMySQL('login_and_registration').query_db(query,data)
+        results = connectToMySQL('recipes_schema').query_db(query,data)
         print("AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHasaasfwdv", results)
         users = []
         for n in results:
@@ -59,24 +57,8 @@ class User:
         return users
 
 
+###################################################################### STATIC METHODS
 
-############################################################################################################## STATIC METHOD
-    # @staticmethod
-    # def validate_user_password( data ):
-    #     isValid = True
-    #     if len( first_name ) < 5:
-    #         flash( "Username must be at least 5 characters long" )
-    #         isValid = False 
-    #     if len( last_name ) < 5:
-    #         flash( "Username must be at least 5 characters long" )
-    #         isValid = False
-    #     if len( email ) < 5:
-    #         flash( "Username must be at least 5 characters long" )
-    #         isValid = False 
-    #     if len( users_password ) < 8:
-    #         flash( "Password must be at least 8 characters long")
-    #         isValid = False
-    #     return isValid
 
     @staticmethod
     def validate_login( data ):
@@ -95,15 +77,13 @@ class User:
         data = {
             "username" : username
         }
-        result = connectToMySQL( "login_and_registration" ).query_db( query, data )
-
+        result = connectToMySQL( "recipes_schema" ).query_db( query, data )
         return result
 
     @staticmethod
     def validate_registration(data):
         isValid = True
         query = "SELECT * FROM users WHERE email = %(email)s;"
-
         data2 = {
             "first_name" : data[0],
             "last_name" : data[1],
@@ -112,48 +92,62 @@ class User:
             "encryptedpassword" : data[4],
             "confirm_users_password" : data[5]
         }
-        results = connectToMySQL('login_and_registration').query_db( query, data2 )
+        results = connectToMySQL('recipes_schema').query_db( query, data2 )
 
         if len(results)>=1:
             flash("Email already registered")
             isValid = False
-
         if len( data[0] ) < 2:
             flash( "First name must be at least 2 characters long" )
             isValid = False 
-
         if len( data[1] ) < 2:
             flash( "Last name must be at least 2 characters long")
             isValid = False
-
         if not EMAIL_REGEX.match(data[2]):
             flash("Email Address must have a valid format, try with a new one please")
             isValid = False
-
         if len(data[3]) < 8:
             flash("Password must be at least 8 characters long")
             isValid = False
-
         if data[3] != data[5]:
             flash("Passwords must match, try again")
             isValid = False
         return isValid
-        
 
-    # @classmethod
-    # def get_all_users(cls):
-    #     query = "SELECT * FROM users;"
-    #     results = connectToMySQL("users_shema").query_db( query )
-    #     users = []
-    #     for n in results:
-    #         users.append( User( n['id'], n['first_name'], n['last_name'], n['email'], n['created_at'] ) )
-    #     return users
-    
-    # @classmethod
-    # def addDataForm(cls, data):
-    #     query = "INSERT INTO users (first_name , last_name , email, created_at, updated_at) VALUES ( %(first_name)s , %(last_name)s , %(email)s, SYSDATE(), SYSDATE());"
-    #     result = connectToMySQL('users_shema').query_db(query,data)
-    #     return result
+#####################################################################################################################################
+
+    @staticmethod
+    def validate_recipe(data):
+        isValid = True
+        query = "SELECT * FROM recipes WHERE users_id = %(users_id)s;"
+        data2 = {
+            "recipe_name" : data[0],
+            "description" : data[1],
+            "recipe_instructions" : data[2],
+            "created_at" : data[3],
+            "thirty_minutes" : data[4],
+        }
+        results = connectToMySQL('recipes_schema').query_db( query, data2 )
+
+        if len(results) == 1:
+            flash("Email already registered")
+            isValid = False
+        if len( data[0] ) < 2:
+            flash( "First name must be at least 2 characters long" )
+            isValid = False 
+        if len( data[1] ) < 2:
+            flash( "Last name must be at least 2 characters long")
+            isValid = False
+        if not EMAIL_REGEX.match(data[2]):
+            flash("Email Address must have a valid format, try with a new one please")
+            isValid = False
+        if len(data[3]) < 8:
+            flash("Password must be at least 8 characters long")
+            isValid = False
+        if data[3] != data[5]:
+            flash("Passwords must match, try again")
+            isValid = False
+        return isValid
 
     # @classmethod
     # def editUserData(cls, data):

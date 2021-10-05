@@ -1,6 +1,6 @@
 from flask import render_template, request, redirect, session
-from login_app import app
-from login_app.models.User import User
+from recipes_app import app
+from recipes_app.models.User import User
 from flask_bcrypt import Bcrypt
 
 
@@ -35,7 +35,6 @@ def registerUser():
         print("invalid values")
     return redirect('/login')
 
-
 @app.route('/login/user', methods = ['POST'] )#receive the data from DB and redirects to the private wall
 def userlogin():
     print("ROUTE /login/user, userlogin ==> ( ['POST'] ) in excecution*****************")
@@ -55,7 +54,7 @@ def userlogin():
             session.clear()
             users_id = result[0]['users_id']
             session['users_id'] = users_id
-            return redirect ('/wall')
+            return redirect ('/dashboard')
         else:
             messageWrongPass = "Wrong credentials provided."
             session['ErrorMessage'] = messageWrongPass
@@ -64,9 +63,13 @@ def userlogin():
         session['ErrorMessage'] = messageWrongPass
     return redirect('/login')
 
-@app.route( "/wall", methods = ['GET'] )
+
+############################################################################################# DASHBOARD
+
+
+@app.route( "/dashboard", methods = ['GET'] )
 def privateWall():
-    print("ROUTE /wall, privateWall in excecution*****************")
+    print("ROUTE /dashboard, privateWall in excecution*****************")
     if 'users_id' not in session:
         return redirect('/logout')
     data = {
@@ -74,7 +77,44 @@ def privateWall():
     }
     users = User.get_userBy_id(data)
     user = User.get_all_users(data)
-    return render_template( "privatewall.html", userwall = users, usersindb = user )
+    return render_template( "dashboard.html", userwall = users, users1 = user )
+
+
+############################################################################################# ADD RECIPE
+
+
+@app.route("/recipes/new", methods = ['GET'] )
+def displayAddNewRecipe():
+    print("ROUTE /recipes/new, displayAddNewRecipe in excecution*****************")
+    data = {
+        'users_id': session['users_id']
+    }
+    users = User.get_userBy_id(data)
+    return render_template( "addnewrecipe.html", userwall = users)
+
+@app.route('/recipe/add', methods = ['POST'] )#receive the data an does the add 
+def addnNewRecipe():
+    print("ROUTE /recipe/add, addnNewRecipe ==> ( ['POST'] ) in excecution*****************")
+    recipe_name = request.form['recipe_name']
+    description = request.form['description']
+    recipe_instructions = request.form['recipe_instructions']
+    created_at = request.form['created_at']
+    thirty_minutes = request.form['30_minutes']
+
+    data = (recipe_name, description, recipe_instructions, created_at, thirty_minutes)
+    print("FROM FORM 2 ADD RECIPE: ", data )
+    User.
+    return redirect('/dashboard')
+    print("END OF ADD RECIPE PART++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+    # if User.validate_registration(data):
+    #     User.register_login(data)
+    # else:
+    #     print("invalid values")
+    # return redirect('/login')
+
+
+################################################################################################### LOG OUT
+
 
 @app.route('/logout')
 def userlogout():

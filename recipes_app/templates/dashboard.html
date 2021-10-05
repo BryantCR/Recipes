@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>All users</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    </head>
+    <body>
+        <div class="holdContent" style="padding: 0;">
+            <div class="d-flex flex-row p-5 justify-content-between">
+                <h2>
+                    Welcome {{userwall[0]['first_name']}}!
+                </h2>
+                <div>
+                    <a href="/recipes/new">
+                        Create
+                    </a>
+                    <a href="/logout">
+                        logout
+                    </a>
+                </div>
+            </div>
+            <div>
+                <p>There are the recipes</p>
+            </div>
+            <div style="padding: 0 25%;">
+                <table class="table table-dark table-striped">
+                    <thead style="align-items: center; justify-content: center; text-align: center;">
+                        <td class="col-auto px-5">
+                            Recipe Name
+                        </td>
+                        <td class="col-auto px-5">
+                            Under 30 minutes?
+                        </td>
+                        <td class="col-auto px-5">
+                            Action
+                        </td>
+                    </thead>
+                    <tbody>
+                        {% for i in users1: %}
+                        <tr>                   
+                            <td class="fs-4" style="align-items: center; justify-content: center; text-align: center;">
+                                {{i['first_name']}} {{i['last_name']}}
+                            </td>
+                            <td class="fs-4" style="align-items: center; justify-content: center; text-align: center;">
+                                {{i['email']}}
+                            </td>
+                            <td class="fs-4" style="align-items: center; justify-content: center; text-align: center;">
+                                <a href="/users/data">View instructions | </a>
+                                <a href="/users/edit">Edit | </a>
+                                <a href="/users/delete">Delete | </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </body>
+</html>
