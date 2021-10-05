@@ -39,13 +39,13 @@
                         </td>
                     </thead>
                     <tbody>
-                        {% for i in users1: %}
+                        {% for i in recipesDB: %}
                         <tr>                   
                             <td class="fs-4" style="align-items: center; justify-content: center; text-align: center;">
-                                {{i['first_name']}} {{i['last_name']}}
+                                {{i['recipe_name']}}
                             </td>
                             <td class="fs-4" style="align-items: center; justify-content: center; text-align: center;">
-                                {{i['email']}}
+                                {{i['thirty_minutes']}}
                             </td>
                             <td class="fs-4" style="align-items: center; justify-content: center; text-align: center;">
                                 <a href="/users/data">View instructions | </a>

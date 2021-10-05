@@ -1,6 +1,7 @@
 from flask import render_template, request, redirect, session
 from recipes_app import app
 from recipes_app.models.User import User
+from recipes_app.models.Recipe import Recipe
 from flask_bcrypt import Bcrypt
 
 
@@ -77,7 +78,9 @@ def privateWall():
     }
     users = User.get_userBy_id(data)
     user = User.get_all_users(data)
-    return render_template( "dashboard.html", userwall = users, users1 = user )
+    result = Recipe.get_all_recipes()
+    print(result)
+    return render_template( "dashboard.html", userwall = users, users1 = user, recipesDB = result )
 
 
 ############################################################################################# ADD RECIPE
@@ -92,25 +95,6 @@ def displayAddNewRecipe():
     users = User.get_userBy_id(data)
     return render_template( "addnewrecipe.html", userwall = users)
 
-@app.route('/recipe/add', methods = ['POST'] )#receive the data an does the add 
-def addnNewRecipe():
-    print("ROUTE /recipe/add, addnNewRecipe ==> ( ['POST'] ) in excecution*****************")
-    recipe_name = request.form['recipe_name']
-    description = request.form['description']
-    recipe_instructions = request.form['recipe_instructions']
-    created_at = request.form['created_at']
-    thirty_minutes = request.form['30_minutes']
-
-    data = (recipe_name, description, recipe_instructions, created_at, thirty_minutes)
-    print("FROM FORM 2 ADD RECIPE: ", data )
-    User.
-    return redirect('/dashboard')
-    print("END OF ADD RECIPE PART++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-    # if User.validate_registration(data):
-    #     User.register_login(data)
-    # else:
-    #     print("invalid values")
-    # return redirect('/login')
 
 
 ################################################################################################### LOG OUT

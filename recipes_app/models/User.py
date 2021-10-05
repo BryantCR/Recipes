@@ -116,38 +116,6 @@ class User:
 
 #####################################################################################################################################
 
-    @staticmethod
-    def validate_recipe(data):
-        isValid = True
-        query = "SELECT * FROM recipes WHERE users_id = %(users_id)s;"
-        data2 = {
-            "recipe_name" : data[0],
-            "description" : data[1],
-            "recipe_instructions" : data[2],
-            "created_at" : data[3],
-            "thirty_minutes" : data[4],
-        }
-        results = connectToMySQL('recipes_schema').query_db( query, data2 )
-
-        if len(results) == 1:
-            flash("Email already registered")
-            isValid = False
-        if len( data[0] ) < 2:
-            flash( "First name must be at least 2 characters long" )
-            isValid = False 
-        if len( data[1] ) < 2:
-            flash( "Last name must be at least 2 characters long")
-            isValid = False
-        if not EMAIL_REGEX.match(data[2]):
-            flash("Email Address must have a valid format, try with a new one please")
-            isValid = False
-        if len(data[3]) < 8:
-            flash("Password must be at least 8 characters long")
-            isValid = False
-        if data[3] != data[5]:
-            flash("Passwords must match, try again")
-            isValid = False
-        return isValid
 
     # @classmethod
     # def editUserData(cls, data):
