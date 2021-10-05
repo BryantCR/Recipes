@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    </head>
+    <body>
+        <main style="padding: 10% 25%;">
+            <div>
+                <h2>Dojo {{dojos[0]["dojos_name"]}}</h2>
+                <h3>Ninjas list</h3>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <td>
+                                First Name
+                            </td>
+                            <td>
+                                Last Name
+                            </td>
+                            <td>
+                                Age
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for ninja in dojos %}
+                            <tr class="table-active">
+                                <td>
+                                    {{ ninja['first_name'] }}
+                                </td>
+                                <td>
+                                    {{ ninja["last_name"] }}
+                                </td>
+                                <td>
+                                    {{ ninja["age"] }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div class="">
+                    <a class="link-secondary" href="/dojos">Home</a>
+                </div>
+            </div>
+        </main>
+    </body>
+</html>
