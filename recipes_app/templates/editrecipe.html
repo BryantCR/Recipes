@@ -27,62 +27,61 @@
                 <h2>
                     Edit Recipe
                 </h2>
-                <div>
-                    {% with messages = get_flashed_messages() %}
-                        {% if messages: %}
-                            {% for message in messages: %}
-                            <p>
-                                {{message}}
-                            </p>
-                            {% endfor %}
-                        {% endif %}
-                    {% endwith %}
-                </div>
                 <div class="d-flex flex-row p-4 justify-content-center">
                     <div title="holdleftsideofthepage" class=" m-5 ">
                         <div class="mb-3">
-                            <label class="form-label" for="recipe_name">
+                            <label class="form-label" for="updaterecipe_name">
                                 Name: 
                             </label>
-                            <input class="form-control" type="text" id="recipe_name" name="recipe_name"/>
+                            <input class="form-control" type="text" id="updaterecipe_name" name="updaterecipe_name" value="{{data[0]['recipe_name']}}"/>
                         </div>
+                        <input type="hidden" value="{{data[0]['recipes_id']}}" name="recipes_id"/>
                         <div class="mb-3">
-                            <label class="form-label" for="description">
+                            <label class="form-label" for="updatedescription">
                                 Description: 
                             </label>
-                            <textarea class="form-control" name="description" id="description" cols="5" rows="2"></textarea>
+                            <textarea class="form-control" name="updatedescription" id="updatedescription" cols="5" rows="2">{{data[0]['recipe_name']}}</textarea>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label" for="recipe_instructions">
+                            <label class="form-label" for="updaterecipe_instructions">
                                 Instructions: 
                             </label>
-                            <textarea class="form-control" name="recipe_instructions" id="recipe_instructions" cols="5" rows="4"></textarea>
+                            <textarea class="form-control" name="updaterecipe_instructions" id="updaterecipe_instructions" cols="5" rows="4">{{data[0]['recipe_name']}}</textarea>
                         </div>
                     </div>
                     <div title="holdrightsideofthepage" class="border border-danger">
                         <div class="mb-3">
-                            <label class="form-label" for="created_at">
+                            <label class="form-label" for="updatecreated_at">
                                 Date Made On: 
                             </label>
-                            <input class="form-control" type="date" id="date" name="created_at"/>
+                            <input class="form-control" type="date" id="date" name="updatecreated_at"/>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label" for="thirty_minutes">
+                            <label class="form-label" for="updatethirty_minutes">
                                 Under 30 minutes? 
                             </label>
                         </div>
-                        <input type="radio" id="Yes" name="thirty_minutes" value="Yes">
+                        <input type="radio" id="Yes" name="updatethirty_minutes" value="Yes">
                         <label class="form-label" for="Yes">
                             Yes
                         </label>
-                        <input type="radio" id="No" name="thirty_minutes" value="No">
+                        <input type="radio" id="No" name="updatethirty_minutes" value="No" checked>
                         <label class="form-label" for="No">
                             No
                         </label>
+                        <div class="alert alert-dark mt-3" style="width: 250px;" role="alert">
+                            {% with messages = get_flashed_messages() %}
+                                {% if messages: %}
+                                    {% for message in messages: %}
+                                    <p>{{message}}</p>
+                                    {% endfor %}
+                                {% endif %}
+                            {% endwith %}
+                        </div>
                     </div>
                 </div>
                 <div class="col-auto">
-                    <input class="btn btn-primary mb-3 bg-dark" type="submit" value="Create" name="buttonSubmitForm" id="buttonSubmitForm">
+                    <input class="btn btn-primary mb-3 bg-dark" type="submit" value="Update" name="buttonSubmitForm" id="buttonSubmitForm">
                 </div>
             </form>
         </main>

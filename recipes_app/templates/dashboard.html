@@ -49,8 +49,10 @@
                             </td>
                             <td class="fs-4" style="align-items: center; justify-content: center; text-align: center;">
                                 <a href="/recipes/{{i['recipes_id']}}">View instructions | </a>
-                                <a href="/recipes/edit/{{i['recipes_id']}}">Edit | </a>
-                                <a href="/recipes/delete/{{i['recipes_id']}}">Delete</a>
+                                {% if i['users_id'] == session['users_id'] %}
+                                    <a href="/recipes/edit/{{i['recipes_id']}}">Edit | </a>
+                                    <a href="/recipes/delete/{{i['recipes_id']}}">Delete</a>
+                                {% endif %}
                             </td>
                         </tr>
                         {% endfor %}

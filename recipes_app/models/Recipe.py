@@ -39,7 +39,8 @@ class Recipe:
 
     @classmethod
     def get_all_recipes(cls):
-        query = "SELECT * FROM recipes;"
+        query = "SELECT recipes.recipe_name, recipes.description, recipes.recipe_instructions, recipes.thirty_minutes, recipes.created_at, recipes.recipes_id, users.users_id, users.first_name FROM users JOIN users_recipes ON users.users_id = users_recipes.user_users_id JOIN recipes ON recipes.recipes_id = users_recipes.recipe_recipes_id;"
+        #query = "SELECT * FROM recipes LEFT JOIN users ON recipes.user_id = users.id;"
         results = connectToMySQL('recipes_schema').query_db( query )
         return results
 
@@ -53,19 +54,44 @@ class Recipe:
         return result
 
     @classmethod
-    def delete_recipe(cls, data ):
-        query = "DELETE FROM recipes WHERE users_recipes = %(id)s;"
+    def delete_recipe(cls, id ):
         data = {
             "id" : id
         }
-        result = connectToMySQL('recipes_schema').query_db( query, data )
+        query = "DELETE FROM users_recipes WHERE recipe_recipes_id = %(id)s;"
+        result1 = connectToMySQL('recipes_schema').query_db( query, data )
 
-        query = "DELETE FROM recipes WHERE recipes = %(id)s;"
-        data2 = {
-            "id" : id
+        query = "DELETE FROM recipes WHERE recipes_id = %(id)s;"
+        result = connectToMySQL('recipes_schema').query_db( query, data )
+        return result, result1
+
+    @classmethod
+    def update_recipe(cls, data):
+        query = "UPDATE recipes SET recipe_name = %(recipe_name)s, description=%(description)s, recipe_instructions = %(recipe_instructions)s , thirty_minutes = %(thirty_minutes)s, created_at = %(created_at)s, updated_at = SYSDATE() WHERE recipes_id = %(recipes_id)s;"
+
+        updateData = {
+            'recipe_name' : data[0],
+            'description' : data[1],
+            'recipe_instructions' : data[2],
+            'thirty_minutes' : data[3],
+            'created_at' : data[4],
+            'recipes_id' : data[5]
         }
-        result = connectToMySQL('recipes_schema').query_db( query, data2 )
-        return result
+        
+        results = connectToMySQL('recipes_schema').query_db( query, updateData )
+        #query = "UPDATE recipes SET recipe_name = %(recipe_name)s, description=%(description)s, recipe_instructions = %(recipe_instructions)s , thirty_minutes = %(thirty_minutes)s, created_at = %(created_at)s, updated_at = SYSDATE() WHERE recipes_id = %(recipes_id)s;"
+
+        # updateData = {
+        #     'recipes_id' : data[0],
+        #     'recipe_name' : data[1],
+        #     'description' : data[2],
+        #     'recipe_instructions' : data[3],
+        #     'thirty_minutes' : data[4],
+        #     'created_at' : data[5],
+        # }
+        
+        # results = connectToMySQL('recipes_schema').query_db( query, updateData )
+        return results
 
 
 #################################################################################
@@ -104,3 +130,39 @@ class Recipe:
             isValid = False
         return isValid
 
+    @staticmethod
+    def validate_Create_Recipe(data):
+        isValid = True
+        if len(data[0]) < 3:
+            flash("The Name must be at least 3 characters long")
+            isValid = False
+        if len(data[1]) < 3:
+            flash("The description must be at least 3 characters long")
+            isValid = False
+        if len(data[2]) < 3:
+            flash("The instructions must be at least 3 characters long")
+            isValid = False
+        # if data[3] == '':
+        #     flash("You must check the time")
+            isValid = False
+        if len(data[0]) == 0 or len(data[1]) == 0 or len(data[2]) == 0 or len(data[3]) == 0 or len(data[4]) == 0:
+            flash("There is an empty data space try to fill it")
+            isValid = False
+        return isValid
+
+    @staticmethod
+    def validate_Update_Recipe(data):
+        isValid = True
+        if len(data[0]) < 3:
+            flash("The Name must be at least 3 characters long")
+            isValid = False
+        if len(data[1]) < 3:
+            flash("The description must be at least 3 characters long")
+            isValid = False
+        if len(data[2]) < 3:
+            flash("The instructions must be at least 3 characters long")
+            isValid = False
+        if len(data[0]) == 0 or len(data[1]) == 0 or len(data[2]) == 0 or len(data[3]) == 0 or len(data[4]) == 0:
+            flash("There is an empty data space try to fill it")
+            isValid = False
+        return isValid
