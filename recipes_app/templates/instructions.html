@@ -26,10 +26,11 @@
                 </div>
             </nav>
         </header>
-        <main style="padding: 10% 25%;">
+        <main style="padding: 10% 20%;">
             <div>
-                <h2>Dojo {{dojos[0]["dojos_name"]}}</h2>
-                <h3>Ninjas list</h3>
+                <h3>
+                    {{recipe[0]['recipe_name']}}
+                </h3>
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -48,28 +49,26 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for ninja in dojos %}
+                        {% for data in recipe %}
                             <tr class="table-active">
                                 <td>
-                                    {{ ninja['first_name'] }}
+                                    {{ data['description'] }}
                                 </td>
                                 <td>
-                                    {{ ninja["last_name"] }}
+                                    {{ data["thirty_minutes"] }}
                                 </td>
                                 <td>
-                                    {{ ninja["age"] }}
+                                    {{ data["recipe_instructions"] }}
                                 </td>
                                 <td>
-                                    {{ ninja["age"] }}
+                                    {{ data["created_at"] }}
                                 </td>
                             </tr>
                         {% endfor %}
                     </tbody>
                 </table>
-                <div class="">
-                    <a class="link-secondary" href="/dojos">Home</a>
-                </div>
             </div>
         </main>
     </body>
 </html>
+

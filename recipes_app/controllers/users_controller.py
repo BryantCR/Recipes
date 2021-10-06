@@ -79,7 +79,6 @@ def privateWall():
     users = User.get_userBy_id(data)
     user = User.get_all_users(data)
     result = Recipe.get_all_recipes()
-    print(result)
     return render_template( "dashboard.html", userwall = users, users1 = user, recipesDB = result )
 
 
@@ -93,8 +92,8 @@ def displayAddNewRecipe():
         'users_id': session['users_id']
     }
     users = User.get_userBy_id(data)
-    return render_template( "addnewrecipe.html", userwall = users)
-
+    result = Recipe.get_all_recipes()
+    return render_template( "addnewrecipe.html", userwall = users, results = result)
 
 
 ################################################################################################### LOG OUT
@@ -104,8 +103,6 @@ def displayAddNewRecipe():
 def userlogout():
     session.clear()
     return redirect('/')
-
-
 
 
 # #//////////////////////////////////////// EDIT PART ///////////////////////////////////////////

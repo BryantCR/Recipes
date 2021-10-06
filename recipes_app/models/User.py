@@ -28,6 +28,7 @@ class User:
             "confirm_users_password" : data[5]
         }
         result = connectToMySQL('recipes_schema').query_db( query, data2 )
+        print("ESTE ES AHHAHHAHAHHAHAHHAHAHHAHAHAHAH", result)
         return result
     
     @classmethod
@@ -56,6 +57,15 @@ class User:
             users.append( User( n['users_id'], n['first_name'], n['last_name'], n['email'], n['users_password'], n['created_at'] ) )
         return users
 
+    @classmethod
+    def get_user_to_validate( cls, username ):
+        query = "SELECT * FROM users WHERE username=%(username)s;"
+        data = {
+            "username" : username
+        }
+        result = connectToMySQL( "recipes_schema" ).query_db( query, data )
+        return result
+
 
 ###################################################################### STATIC METHODS
 
@@ -71,15 +81,6 @@ class User:
             is_valid = False
         return is_valid
 
-    @classmethod
-    def get_user_to_validate( cls, username ):
-        query = "SELECT * FROM users WHERE username=%(username)s;"
-        data = {
-            "username" : username
-        }
-        result = connectToMySQL( "recipes_schema" ).query_db( query, data )
-        return result
-
     @staticmethod
     def validate_registration(data):
         isValid = True
@@ -93,7 +94,6 @@ class User:
             "confirm_users_password" : data[5]
         }
         results = connectToMySQL('recipes_schema').query_db( query, data2 )
-
         if len(results)>=1:
             flash("Email already registered")
             isValid = False

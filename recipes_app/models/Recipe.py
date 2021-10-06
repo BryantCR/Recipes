@@ -2,6 +2,8 @@ from recipes_app.config.MySQLConnection import connectToMySQL
 from recipes_app import app 
 from datetime import date, datetime
 from flask import flash
+from flask import render_template, request, redirect, session
+
 
 
 class Recipe:
@@ -26,6 +28,13 @@ class Recipe:
             "created_at" : data[4],
         }
         result = connectToMySQL('recipes_schema').query_db( query, data2 )
+
+        query = "INSERT INTO users_recipes (user_users_id, recipe_recipes_id) VALUES ( %(user_users_id)s , %(recipe_recipes_id)s );"
+        data3 = {
+            "user_users_id" : session['users_id'],
+            "recipe_recipes_id" : result
+            }
+        connectToMySQL('recipes_schema').query_db( query, data3 )
         return result
 
     @classmethod
@@ -35,9 +44,28 @@ class Recipe:
         return results
 
     @classmethod
+    def get_recipe_information( cls, id ):
+        query = "SELECT * FROM recipes WHERE recipes_id = %(id)s;"
+        data = {
+            "id" : id
+        }
+        result = connectToMySQL('recipes_schema').query_db( query, data )
+        return result
+
+    @classmethod
     def delete_recipe(cls, data ):
-        query = "DELETE FROM recipes WHERE users_id = %(users_id)s;".
-        return connectToMySQL('recipes_schema').query_db(query, data)
+        query = "DELETE FROM recipes WHERE users_recipes = %(id)s;"
+        data = {
+            "id" : id
+        }
+        result = connectToMySQL('recipes_schema').query_db( query, data )
+
+        query = "DELETE FROM recipes WHERE recipes = %(id)s;"
+        data2 = {
+            "id" : id
+        }
+        result = connectToMySQL('recipes_schema').query_db( query, data2 )
+        return result
 
 
 #################################################################################
@@ -75,3 +103,4 @@ class Recipe:
             flash("Passwords must match, try again")
             isValid = False
         return isValid
+

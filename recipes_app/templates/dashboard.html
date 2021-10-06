@@ -25,7 +25,7 @@
             <div>
                 <p>There are the recipes</p>
             </div>
-            <div style="padding: 0 25%;">
+            <div style="padding: 0 20%;">
                 <table class="table table-dark table-striped">
                     <thead style="align-items: center; justify-content: center; text-align: center;">
                         <td class="col-auto px-5">
@@ -48,9 +48,9 @@
                                 {{i['thirty_minutes']}}
                             </td>
                             <td class="fs-4" style="align-items: center; justify-content: center; text-align: center;">
-                                <a href="/users/data">View instructions | </a>
-                                <a href="/users/edit">Edit | </a>
-                                <a href="/users/delete">Delete | </a>
+                                <a href="/recipes/{{i['recipes_id']}}">View instructions | </a>
+                                <a href="/recipes/edit/{{i['recipes_id']}}">Edit | </a>
+                                <a href="/recipes/delete/{{i['recipes_id']}}">Delete</a>
                             </td>
                         </tr>
                         {% endfor %}

@@ -10,10 +10,10 @@
         <header>
             <div class="d-flex flex-row p-5 justify-content-between">
                 <h2>
-                    Add a new recipe {{userwall[0]['first_name']}}!
+                    Edit Recipe {{userwall[0]['first_name']}}!
                 </h2>
                 <div>
-                    <a href="">
+                    <a href="/dashboard">
                         Dashboard
                     </a>
                     <a href="/logout">
@@ -23,9 +23,9 @@
             </div>
         </header>
         <main class="d-flex flex-row justify-content-center">
-            <form form class="bg-primary text-white" action="/recipe/add" method="POST">
+            <form form class="bg-primary text-white" action="/recipe/edit" method="POST">
                 <h2>
-                    New Recipe
+                    Edit Recipe
                 </h2>
                 <div>
                     {% with messages = get_flashed_messages() %}
